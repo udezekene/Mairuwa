@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>This na Mairuwa</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<script src="js/jquery-1.6.min.js" type="text/javascript"></script>
+<script src="js/jquery.validate.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){  
+   $('#newsletter').submit(function(){  
+  
+  
+	//check the form is not currently submitting  
+    if($(this).data('formstatus') !== 'submitting'){  
+		var form = $(this),  
+		formData = form.serialize(),  
+		formUrl = form.attr('action'),  
+		formMethod = form.attr('method'),  
+		responseMsg = $('#form_response') 
+
+		//show response message - waiting  
+		responseMsg.hide()  
+		   .addClass('response-waiting')  
+		   .text('Please Wait...')  
+		   .fadeIn(200); 
+        //send data to server  
+          
+        //send data to server for validation  
+        $.ajax({  
+            url: formUrl,  
+            type: formMethod,  
+            data: formData,  
+            success:function(data){  
+  
+                //setup variables  
+                var responseData = jQuery.parseJSON(data),  
+                    klass = '';  
+  
+                //response conditional  
+                switch(responseData.status){  
+                    case 'error':  
+                        klass = 'response-error';  
+                    break;  
+                    case 'success':  
+                        klass = 'response-success';  
+                    break;  
+                }  
+  
+                //show reponse message  
+                responseMsg.fadeOut(200,function(){  
+                    $(this).removeClass('response-waiting')  
+                           .addClass(klass)  
+                           .text(responseData.message)  
+                           .fadeIn(200,function(){  
+                               //set timeout to hide response message  
+                               setTimeout(function(){  
+                                   responseMsg.fadeOut(200,function(){  
+                                       $(this).removeClass(klass);
+									   
+                                   });  
+                               },3000);  
+                            });  
+                 });  
+              }  
+        });  
+	}
+        //prevent form from submitting  
+        return false;  
+    });  
+});  
+
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-27135286-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<body>
+<div id="container">
+	<div id="content">
+    	
+        <div id="ready">
+        	<h1> This na Mairuwa </h1>
+            <div class="right">
+            <img src="img/bulb.png" alt="Mairuwa" />
+         	</div>
+            <div class="left">
+            <p class="intro"> Finding water resources is about to get a whole lot easier </p>
+            <p class="tuned"> Stay tuned... We are working hard to make mairuwa useful to you. 
+            Enter your e-mail address to be the first to know when we launch; and we'll be in touch </p>
+            </div>
+            
+            <div id="theform">
+                <p class="twitter"><a href="http://www.twitter.com/mairuwaa"  target="_blank" title="Follow Mairuwa on Twitter">follow us</a></p>
+                <form action="verify.php" method="get" id="newsletter">
+                <input name="email" type="text" class="inputbox" />
+                <input name="Submit" class="btn" type="submit" value="Go" />
+                <p id="form_response"></p>
+                </form>
+            
+            </div>
+            
+            <p class="spam"> we HATE spam more than you. So, feel free to kick us in the NUTS if you 
+            find us giving your e-mail to a third party </p>
+		</div>
+    
+        
+        
+    </div>
+	
+	<div id="footer">
+		<div class ="fc">
+			<div class="supported">
+			This initiative is supported by
+			</div>
+			<div class="supports">
+			<img src="img/cclogo.png" alt ="CoCreation Hub Nigeria" />
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
